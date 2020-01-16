@@ -1,5 +1,6 @@
 package ws18.Controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ws18.Control.ControlReg;
@@ -13,9 +14,16 @@ public class ReportingController {
 
     private IReportingService reportingService = ControlReg.getReportingService();
 
-    @RequestMapping("/report")
+    @RequestMapping(path = "/report", method = RequestMethod.GET)
     public String index() {
         return "Greetings from report endpoint";
+    }
+
+    @PostMapping(path = "/transactions", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<DTUPayTransaction> saveTransaction(@RequestBody DTUPayTransaction transaction) {
+        this.reportingService.saveTransaction(transaction);
+
+        return new ResponseEntity<DTUPayTransaction>(transaction, HttpStatus.OK);
     }
 
     @RequestMapping(path = "/transactions", method = RequestMethod.GET)
