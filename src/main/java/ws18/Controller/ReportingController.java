@@ -7,6 +7,7 @@ import ws18.Control.ControlReg;
 import ws18.Model.DTUPayTransaction;
 import ws18.Service.IReportingService;
 
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 
 @RestController
@@ -23,12 +24,19 @@ public class ReportingController {
     public ResponseEntity<DTUPayTransaction> saveTransaction(@RequestBody DTUPayTransaction transaction) {
         this.reportingService.saveTransaction(transaction);
 
-        return new ResponseEntity<DTUPayTransaction>(transaction, HttpStatus.OK);
+        return new ResponseEntity<>(transaction, HttpStatus.OK);
     }
 
     @RequestMapping(path = "/transactions", method = RequestMethod.GET)
     public ArrayList<DTUPayTransaction> getAllTransactions() {
         return this.reportingService.getAllTransactions();
+    }
+
+    @RequestMapping(path = "/transaction/{id}", produces = "application/json", method = RequestMethod.GET)
+    public ResponseEntity<DTUPayTransaction> getTransactionById(@PathVariable @NotNull String id) {
+        DTUPayTransaction transactionByIdFromReportingService = this.reportingService.getTransactionById(id);
+
+        return new ResponseEntity<>(transactionByIdFromReportingService, HttpStatus.OK);
     }
 
     /*
