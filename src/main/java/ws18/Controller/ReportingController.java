@@ -12,9 +12,4 @@ public class ReportingController {
         return "Greetings from report endpoint";
     }
 
-    @RequestMapping("/reporting")
-    public String greeting() {
-        return "Greetings from reporting endpoint";
-    }
-
 }
