@@ -18,11 +18,6 @@ public class ReportingController {
 
     private IReportingService reportingService = ControlReg.getReportingService();
 
-    @RequestMapping(path = "/report", method = RequestMethod.GET)
-    public String index() {
-        return "Greetings from report endpoint";
-    }
-
     @PostMapping(path = "/transactions", consumes = "application/json", produces = "application/json")
     public ResponseEntity<DTUPayTransaction> saveTransaction(@RequestBody DTUPayTransaction transaction) {
         this.reportingService.saveTransaction(transaction);
