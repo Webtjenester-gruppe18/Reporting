@@ -11,10 +11,7 @@ import ws18.Model.MerchantReportTransaction;
 import ws18.Service.IReportingService;
 
 import javax.validation.constraints.NotNull;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 @RestController
 public class ReportingController {
