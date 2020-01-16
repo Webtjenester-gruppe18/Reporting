@@ -35,7 +35,7 @@ public class ReportingController {
         return this.reportingService.getAllTransactions();
     }
 
-    @RequestMapping(path = "/transaction/{id}", produces = "application/json", method = RequestMethod.GET)
+    @RequestMapping(path = "/transactions/{id}", produces = "application/json", method = RequestMethod.GET)
     public ResponseEntity<DTUPayTransaction> getTransactionById(@PathVariable @NotNull String id) {
         DTUPayTransaction transactionByIdFromReportingService = this.reportingService.getTransactionById(id);
 
