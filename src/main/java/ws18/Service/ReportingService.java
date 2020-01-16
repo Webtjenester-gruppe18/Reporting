@@ -17,10 +17,11 @@ public class ReportingService implements IReportingService {
     }
 
     @Override
-    public ArrayList<CustomerReportTransaction> getCustomerTransactionsByIds(Customer customer) {
+    public ArrayList<CustomerReportTransaction> getCustomerTransactionsByIds(String customerCpr) {
 
         ArrayList<CustomerReportTransaction> result = new ArrayList<>();
 
+        /*
         for (String transactionId : customer.getTransactionIds()) {
             DTUPayTransaction transaction = this.reportDatabase.getTransactionById(transactionId);
 
@@ -28,16 +29,17 @@ public class ReportingService implements IReportingService {
                     new CustomerReportTransaction(transaction, customer);
 
             result.add(reportTransaction);
-        }
+        }*/
 
         return result;
     }
 
     @Override
-    public ArrayList<CustomerReportTransaction> getCustomerTransactionsByIdsFromThenToNow(Customer customer, long fromTime) {
+    public ArrayList<CustomerReportTransaction> getCustomerTransactionsByIdsFromThenToNow(String customerCpr, long fromTime) {
 
         ArrayList<CustomerReportTransaction> result = new ArrayList<>();
 
+        /*
         for (String transactionId : customer.getTransactionIds()) {
             DTUPayTransaction transaction = this.reportDatabase.getTransactionById(transactionId);
 
@@ -47,16 +49,17 @@ public class ReportingService implements IReportingService {
 
                 result.add(reportTransaction);
             }
-        }
+        }*/
 
         return result;
     }
 
     @Override
-    public ArrayList<MerchantReportTransaction> getMerchantTransactionsByIds(Merchant merchant) {
+    public ArrayList<MerchantReportTransaction> getMerchantTransactionsByIds(String merchantCpr) {
 
         ArrayList<MerchantReportTransaction> result = new ArrayList<>();
 
+        /*
         for (String transactionId : merchant.getTransactionIds()) {
             DTUPayTransaction transaction = this.reportDatabase.getTransactionById(transactionId);
 
@@ -68,15 +71,16 @@ public class ReportingService implements IReportingService {
                             transaction.getToken());
 
             result.add(merchantReportTransaction);
-        }
+        }*/
 
         return result;
     }
 
     @Override
-    public ArrayList<MerchantReportTransaction> getMerchantTransactionsByIdsFromThenToNow(Merchant merchant, long fromTime) {
+    public ArrayList<MerchantReportTransaction> getMerchantTransactionsByIdsFromThenToNow(String merchantCpr, long fromTime) {
         ArrayList<MerchantReportTransaction> result = new ArrayList<>();
 
+        /*
         for (String transactionId : merchant.getTransactionIds()) {
             DTUPayTransaction transaction = this.reportDatabase.getTransactionById(transactionId);
 
@@ -90,7 +94,7 @@ public class ReportingService implements IReportingService {
 
                 result.add(merchantReportTransaction);
             }
-        }
+        }*/
 
         return result;
     }
