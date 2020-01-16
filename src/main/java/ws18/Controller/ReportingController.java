@@ -9,12 +9,12 @@ public class ReportingController {
 
     @GetMapping("/report")
     public String index() {
-        return "Greetings from report controller";
+        return "Greetings from report endpoint";
     }
 
     @RequestMapping("/reporting")
     public String greeting() {
-        return "Greetings from report controller";
+        return "Greetings from reporting endpoint";
     }
 
 }
