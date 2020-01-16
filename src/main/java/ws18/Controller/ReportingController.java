@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ws18.Control.ControlReg;
+import ws18.Helper.DateTimeHelper;
 import ws18.Model.CustomerReportTransaction;
 import ws18.Model.DTUPayTransaction;
 import ws18.Model.MerchantReportTransaction;
@@ -53,18 +54,7 @@ public class ReportingController {
 
     @RequestMapping(path = "/transactions/customer/{id}/{dateFrom}", produces = "application/json", method = RequestMethod.GET)
     public ResponseEntity<Object> getCustomerTransactionsByIdsFromThenToNow(@PathVariable @NotNull String id, String dateFrom) {
-
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("ddMMMyyyy");
-        long dateFromInMS = 0;
-
-        try {
-            Date date = simpleDateFormat.parse(dateFrom);
-            dateFromInMS = date.getTime();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        ArrayList<CustomerReportTransaction> customerTransactionsByIdFromThenToNow = this.reportingService.getCustomerTransactionsByIdsFromThenToNow(id, dateFromInMS);
+        ArrayList<CustomerReportTransaction> customerTransactionsByIdFromThenToNow = this.reportingService.getCustomerTransactionsByIdsFromThenToNow(id, DateTimeHelper.convertDateStringToMS(dateFrom));
 
         return ResponseEntity.status(HttpStatus.OK).body(customerTransactionsByIdFromThenToNow);
     }
@@ -78,18 +68,7 @@ public class ReportingController {
 
     @RequestMapping(path = "/transactions/merchant/{id}/{dateFrom}", produces = "application/json", method = RequestMethod.GET)
     public ResponseEntity<Object> getMerchantTransactionsByIdsFromThenToNow(@PathVariable @NotNull String id, String dateFrom) {
-
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("ddMMMyyyy");
-        long dateFromInMS = 0;
-
-        try {
-            Date date = simpleDateFormat.parse(dateFrom);
-            dateFromInMS = date.getTime();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        ArrayList<MerchantReportTransaction> merchantTransactionsByIdFromThenToNow = this.reportingService.getMerchantTransactionsByIdsFromThenToNow(id, dateFromInMS);
+        ArrayList<MerchantReportTransaction> merchantTransactionsByIdFromThenToNow = this.reportingService.getMerchantTransactionsByIdsFromThenToNow(id, DateTimeHelper.convertDateStringToMS(dateFrom));
 
         return ResponseEntity.status(HttpStatus.OK).body(merchantTransactionsByIdFromThenToNow);
     }
