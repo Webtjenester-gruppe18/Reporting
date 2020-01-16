@@ -1,8 +1,8 @@
 package ws18.Service;
 
-import Control.ControlReg;
-import Database.IReportDatabase;
-import Model.*;
+import ws18.Control.ControlReg;
+import ws18.Database.IReportDatabase;
+import ws18.Model.*;
 
 import java.util.ArrayList;
 import java.util.Date;
