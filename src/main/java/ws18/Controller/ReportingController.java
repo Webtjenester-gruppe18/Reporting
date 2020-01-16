@@ -22,7 +22,7 @@ public class ReportingController {
     public ResponseEntity<DTUPayTransaction> saveTransaction(@RequestBody DTUPayTransaction transaction) {
         this.reportingService.saveTransaction(transaction);
 
-        return new ResponseEntity<>(transaction, HttpStatus.OK);
+        return new ResponseEntity<>(transaction, HttpStatus.CREATED);
     }
 
     @RequestMapping(path = "/transactions", method = RequestMethod.GET)
