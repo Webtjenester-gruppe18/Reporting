@@ -39,10 +39,32 @@ public class ReportingController {
         return new ResponseEntity<>(transactionByIdFromReportingService, HttpStatus.OK);
     }
 
-    /*
-    @RequestMapping(path = "/report/customer/{}")
-    public ResponseEntity<Object> greeting(@RequestParam(value = "name", defaultValue = "World") String name) {
-        //return new Greeting(counter.incrementAndGet(), String.format(template, name));
-    }*/
+    @RequestMapping(path = "/transactions/customer/{id}", produces = "application/json", method = RequestMethod.GET)
+    public ResponseEntity<Object> getCustomerTransactionsByIds(@PathVariable @NotNull String id) {
+        ArrayList<DTUPayTransaction> customerTransactionsById = this.reportingService.getCustomerTransactionsByIds(id);
+
+        return ResponseEntity.status(HttpStatus.OK).body(customerTransactionsById);
+    }
+
+    @RequestMapping(path = "/transactions/customer/{dateFrom}/{dateNow}", produces = "application/json", method = RequestMethod.GET)
+    public ResponseEntity<Object> getCustomerTransactionsByIdsFromThenToNow(@PathVariable @NotNull String id) {
+        ArrayList<DTUPayTransaction> customerTransactionsByIdFromThenToNow = this.reportingService.getCustomerTransactionsByIdsFromThenToNow(id);
+
+        return ResponseEntity.status(HttpStatus.OK).body(customerTransactionsByIdFromThenToNow);
+    }
+
+    @RequestMapping(path = "/transactions/merchant/{id}", produces = "application/json", method = RequestMethod.GET)
+    public ResponseEntity<Object> getMerchantTransactionsByIds(@PathVariable @NotNull String id) {
+        ArrayList<DTUPayTransaction> merchantTransactionsById = this.reportingService.getMerchantTransactionsByIds(id);
+
+        return ResponseEntity.status(HttpStatus.OK).body(merchantTransactionsById);
+    }
+
+    @RequestMapping(path = "/transactions/merchant/{id}/{dateFrom}/{dateNow}", produces = "application/json", method = RequestMethod.GET)
+    public ResponseEntity<Object> getMerchantTransactionsByIdsFromThenToNow(@PathVariable @NotNull String id) {
+        ArrayList<DTUPayTransaction> merchantTransactionsByIdFromThenToNow = this.reportingService.getMerchantTransactionsByIdsFromThenToNow(id);
+
+        return ResponseEntity.status(HttpStatus.OK).body(merchantTransactionsByIdFromThenToNow);
+    }
 
 }
