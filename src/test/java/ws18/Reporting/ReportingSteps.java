@@ -1,4 +1,4 @@
-package ws18;
+package ws18.Reporting;
 
 import ws18.Control.ControlReg;
 import ws18.Helper.DateTimeHelper;
