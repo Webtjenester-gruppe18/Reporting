@@ -6,7 +6,7 @@ import java.util.Date;
 
 public class DateTimeHelper {
 
-    public long convertDateStringToMS(String dateFrom) {
+    public static long convertDateStringToMS(String dateFrom) {
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("ddMMMyyyy");
         long dateFromInMS = 0;
