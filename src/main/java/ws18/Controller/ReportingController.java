@@ -45,7 +45,7 @@ public class ReportingController {
     }
 
     @RequestMapping(path = "/transactions/customer/{id}/{dateFrom}", produces = "application/json", method = RequestMethod.GET)
-    public ResponseEntity<Object> getCustomerTransactionsByIdsFromThenToNow(@PathVariable @NotNull String id, long dateFrom) {
+    public ResponseEntity<Object> getCustomerTransactionsByIdsFromThenToNow(@PathVariable @NotNull String id, @PathVariable @NotNull long dateFrom) {
         ArrayList<CustomerReportTransaction> customerTransactionsByIdFromThenToNow = this.reportingService.getCustomerTransactionsByIdsFromThenToNow(id, dateFrom);
 
         return ResponseEntity.status(HttpStatus.OK).body(customerTransactionsByIdFromThenToNow);
@@ -59,7 +59,7 @@ public class ReportingController {
     }
 
     @RequestMapping(path = "/transactions/merchant/{id}/{dateFrom}", produces = "application/json", method = RequestMethod.GET)
-    public ResponseEntity<Object> getMerchantTransactionsByIdsFromThenToNow(@PathVariable @NotNull String id, long dateFrom) {
+    public ResponseEntity<Object> getMerchantTransactionsByIdsFromThenToNow(@PathVariable @NotNull String id, @PathVariable @NotNull long dateFrom) {
         ArrayList<MerchantReportTransaction> merchantTransactionsByIdFromThenToNow = this.reportingService.getMerchantTransactionsByIdsFromThenToNow(id, dateFrom);
 
         return ResponseEntity.status(HttpStatus.OK).body(merchantTransactionsByIdFromThenToNow);
