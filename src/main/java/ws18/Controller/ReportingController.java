@@ -46,8 +46,8 @@ public class ReportingController {
         return ResponseEntity.status(HttpStatus.OK).body(customerTransactionsById);
     }
 
-    @RequestMapping(path = "/transactions/customer/{dateFrom}/{dateNow}", produces = "application/json", method = RequestMethod.GET)
-    public ResponseEntity<Object> getCustomerTransactionsByIdsFromThenToNow(@PathVariable @NotNull String id) {
+    @RequestMapping(path = "/transactions/customer/{dateFrom}", produces = "application/json", method = RequestMethod.GET)
+    public ResponseEntity<Object> getCustomerTransactionsByIdsFromThenToNow(@PathVariable @NotNull String id, String dateFrom) {
         ArrayList<DTUPayTransaction> customerTransactionsByIdFromThenToNow = this.reportingService.getCustomerTransactionsByIdsFromThenToNow(id);
 
         return ResponseEntity.status(HttpStatus.OK).body(customerTransactionsByIdFromThenToNow);
@@ -60,8 +60,8 @@ public class ReportingController {
         return ResponseEntity.status(HttpStatus.OK).body(merchantTransactionsById);
     }
 
-    @RequestMapping(path = "/transactions/merchant/{id}/{dateFrom}/{dateNow}", produces = "application/json", method = RequestMethod.GET)
-    public ResponseEntity<Object> getMerchantTransactionsByIdsFromThenToNow(@PathVariable @NotNull String id) {
+    @RequestMapping(path = "/transactions/merchant/{id}/{dateFrom}", produces = "application/json", method = RequestMethod.GET)
+    public ResponseEntity<Object> getMerchantTransactionsByIdsFromThenToNow(@PathVariable @NotNull String id, String dateFrom) {
         ArrayList<DTUPayTransaction> merchantTransactionsByIdFromThenToNow = this.reportingService.getMerchantTransactionsByIdsFromThenToNow(id);
 
         return ResponseEntity.status(HttpStatus.OK).body(merchantTransactionsByIdFromThenToNow);
