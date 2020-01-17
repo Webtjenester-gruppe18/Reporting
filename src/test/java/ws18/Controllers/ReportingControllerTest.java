@@ -24,18 +24,18 @@ class ReportingControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    /*
     @Test
     void getAllTransactions() throws Exception {
         mockMvc.perform(get("/transactions"))
                 .andExpect(status().isOk());
     }
 
-    /*
     @Test
     void getTransactionById() throws Exception {
         mockMvc.perform(get("/transactions/" + transactionId))
                 .andExpect(status().isOk());
-    }*/
+    }
 
     @Test
     void getCustomerTransactionsByIds() throws Exception {
@@ -59,6 +59,6 @@ class ReportingControllerTest {
     void getMerchantTransactionsByIdsFromThenToNow() throws Exception {
         mockMvc.perform(get("/transactions/merchant/" + merchantCpr + "/" + dateFrom))
                 .andExpect(status().isOk());
-    }
+    }*/
 
 }
