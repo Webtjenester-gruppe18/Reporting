@@ -39,15 +39,8 @@ public class ReportingSteps {
         this.fastmoneyBankHTTPClient = ControlReg.getFastMoneyBankHTTPClient();
     }
 
-    @Given("a registered customer with an account")
-    public void aRegisteredCustomerWithAnAccount() {
-        this.currentCustomer = new Customer();
-        this.currentCustomer.setCprNumber("888888-2222");
-        this.currentCustomer.setFirstName("Jane");
-        this.currentCustomer.setLastName("Doe");
-        this.currentCustomer.setAccountId("Some value for testing");
-        this.currentCustomer.setTransactionIds(new ArrayList<>());
-
+    @Before
+    public void setUpAccountCustomer() {
         this.currentFastmoneyCustomer = new FastmoneyAccount();
         this.currentFastmoneyCustomer.setBalance(1000);
         this.currentFastmoneyCustomer.setUser(
@@ -58,7 +51,83 @@ public class ReportingSteps {
                 )
         );
 
-        this.fastmoneyBankHTTPClient.createAccount(this.currentFastmoneyCustomer);
+        String currentFastmoneyCustomerAccountId = this.fastmoneyBankHTTPClient.createAccount(this.currentFastmoneyCustomer);
+
+        this.currentCustomer = new Customer();
+        this.currentCustomer.setCprNumber(this.currentFastmoneyCustomer.getUser().getCprNumber());
+        this.currentCustomer.setFirstName(this.currentFastmoneyCustomer.getUser().getFirstName());
+        this.currentCustomer.setLastName(this.currentFastmoneyCustomer.getUser().getLastName());
+        this.currentCustomer.setAccountId(currentFastmoneyCustomerAccountId);
+        this.currentCustomer.setTransactionIds(new ArrayList<>());
+    }
+
+    @Before
+    public void setUpAccountMerchant() {
+        this.currentFastMoneyMerchant = new FastmoneyAccount();
+        this.currentFastMoneyMerchant.setBalance(1000);
+        this.currentFastMoneyMerchant.setUser(
+                new User(
+                        "John",
+                        "Doe",
+                        "444444-1111"
+                )
+        );
+
+        String currentFastmoneyMerchantAccountId = this.fastmoneyBankHTTPClient.createAccount(this.currentFastMoneyMerchant);
+
+        this.currentMerchant = new Merchant();
+        this.currentMerchant.setCprNumber(this.currentFastMoneyMerchant.getUser().getCprNumber());
+        this.currentMerchant.setFirstName(this.currentFastMoneyMerchant.getUser().getFirstName());
+        this.currentMerchant.setLastName(this.currentFastMoneyMerchant.getUser().getLastName());
+        this.currentMerchant.setAccountId(currentFastmoneyMerchantAccountId);
+        this.currentMerchant.setTransactionIds(new ArrayList<>());
+    }
+
+    @Given("a registered customer with an account")
+    public void aRegisteredCustomerWithAnAccount() {
+        /*
+        this.currentFastmoneyCustomer = new FastmoneyAccount();
+        this.currentFastmoneyCustomer.setBalance(1000);
+        this.currentFastmoneyCustomer.setUser(
+                new User(
+                        "Jane",
+                        "Doe",
+                        "888888-2222"
+                )
+        );
+
+        String currentFastmoneyCustomerAccountId = this.fastmoneyBankHTTPClient.createAccount(this.currentFastmoneyCustomer);
+
+        this.currentCustomer = new Customer();
+        this.currentCustomer.setCprNumber(this.currentFastmoneyCustomer.getUser().getCprNumber());
+        this.currentCustomer.setFirstName(this.currentFastmoneyCustomer.getUser().getFirstName());
+        this.currentCustomer.setLastName(this.currentFastmoneyCustomer.getUser().getLastName());
+        this.currentCustomer.setAccountId(currentFastmoneyCustomerAccountId);
+        this.currentCustomer.setTransactionIds(new ArrayList<>());
+        */
+    }
+
+    @Given("a registered merchant with an account")
+    public void aRegisteredMerchantWithAnAccount() {
+        /*
+        this.currentFastMoneyMerchant = new FastmoneyAccount();
+        this.currentFastMoneyMerchant.setBalance(1000);
+        this.currentFastMoneyMerchant.setUser(
+                new User(
+                        "John",
+                        "Doe",
+                        "444444-1111"
+                )
+        );
+
+        String currentFastmoneyMerchantAccountId = this.fastmoneyBankHTTPClient.createAccount(this.currentFastMoneyMerchant);
+
+        this.currentMerchant = new Merchant();
+        this.currentMerchant.setCprNumber(this.currentFastMoneyMerchant.getUser().getCprNumber());
+        this.currentMerchant.setFirstName(this.currentFastMoneyMerchant.getUser().getFirstName());
+        this.currentMerchant.setLastName(this.currentFastMoneyMerchant.getUser().getLastName());
+        this.currentMerchant.setAccountId(currentFastmoneyMerchantAccountId);
+        this.currentMerchant.setTransactionIds(new ArrayList<>());*/
     }
 
     @Given("the customer has performed atleast one transaction")
@@ -68,13 +137,14 @@ public class ReportingSteps {
                 new DTUPayTransaction(
                         BigDecimal.valueOf(1111),
                         this.currentCustomer.getAccountId(),
-                        "Some Value",
+                        this.currentMerchant.getAccountId(),
                         "Comment",
                         new Date().getTime(),
                         new Token());
 
         // String transactionId = this.reportingService.saveTransaction(transaction);
         String transactionId = this.paymentHTTPClient.saveDTUPayTransaction(transaction);
+        System.out.println("----- TransactionId " + transactionId);
 
         this.currentCustomer.getTransactionIds().add(transactionId);
 
@@ -98,28 +168,21 @@ public class ReportingSteps {
                 new DTUPayTransaction(
                         BigDecimal.valueOf(1111),
                         this.currentCustomer.getAccountId(),
-                        "Some Value",
+                        this.currentMerchant.getAccountId(),
                         "Comment",
                         new Date().getTime(),
                         new Token());
 
-        String transactionId = this.reportingService.saveTransaction(transaction);
-
+        // String transactionId = this.reportingService.saveTransaction(transaction);
+        String transactionId = this.paymentHTTPClient.saveDTUPayTransaction(transaction);
         this.currentCustomer.getTransactionIds().add(transactionId);
 
-        assertEquals(1, this.currentCustomer.getTransactionIds().size());
+        assertEquals(1, this.reportingService.getCustomerTransactionsByIds(this.currentCustomer.getCprNumber()).size()); //this.currentCustomer.getTransactionIds().size());
     }
 
     @When("the customer requests for an monthly overview")
     public void theCustomerRequestsForAnMonthlyOverview() {
         this.customerTransactions = this.reportingService.getCustomerTransactionsByIdsFromThenToNow(this.currentCustomer.getAccountId(), DateTimeHelper.MONTH_IN_MILLIS);
-    }
-
-    @Given("a registered merchant with an account")
-    public void aRegisteredMerchantWithAnAccount() {
-        Merchant merchant = new Merchant("AccountId", "John", "Doe", "0000-000");
-
-        this.currentMerchant = merchant;
     }
 
     @Given("the merchant has performed atleast one transaction")
@@ -128,13 +191,13 @@ public class ReportingSteps {
                 new DTUPayTransaction(
                         BigDecimal.valueOf(2222),
                         this.currentMerchant.getAccountId(),
-                        "Some Value",
+                        this.currentCustomer.getAccountId(),
                         "Comment",
                         new Date().getTime(),
                         new Token());
 
-        String transactionId = this.reportingService.saveTransaction(transaction);
-
+        // String transactionId = this.reportingService.saveTransaction(transaction);
+        String transactionId = this.paymentHTTPClient.saveDTUPayTransaction(transaction);
         this.currentMerchant.getTransactionIds().add(transactionId);
 
         assertEquals(1, this.currentMerchant.getTransactionIds().size());
@@ -157,7 +220,7 @@ public class ReportingSteps {
                 new DTUPayTransaction(
                         BigDecimal.valueOf(2222),
                         this.currentMerchant.getAccountId(),
-                        "Some Value",
+                        this.currentCustomer.getAccountId(),
                         "Comment",
                         new Date().getTime(),
                         new Token());
@@ -180,8 +243,9 @@ public class ReportingSteps {
         assertEquals(1, this.merchantReportTransactions.size());
     }
 
-    /*
     @After
-    public void tearDown() throws BankServiceException_Exception {
-    }*/
+    public void tearDown() {
+        this.fastmoneyBankHTTPClient.deleteAccount(this.currentCustomer.getAccountId());
+        this.fastmoneyBankHTTPClient.deleteAccount(this.currentMerchant.getAccountId());
+    }
 }
