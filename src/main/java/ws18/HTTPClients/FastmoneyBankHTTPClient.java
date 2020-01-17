@@ -9,6 +9,7 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 public class FastmoneyBankHTTPClient {
@@ -20,7 +21,14 @@ public class FastmoneyBankHTTPClient {
         Response dtuPayTransactionResponse =
                 w.request().post(Entity.json(fastmoneyAccount));
 
-        return dtuPayTransactionResponse.toString();
+        return dtuPayTransactionResponse.readEntity(String.class);
+    }
+
+    public String deleteAccount(String fastmoneyAccountId) {
+        Response fastmoneyDeletion =
+                w.path("/" + fastmoneyAccountId).request().delete();
+
+        return fastmoneyDeletion.readEntity(String.class);
     }
 
 }

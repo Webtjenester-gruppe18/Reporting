@@ -17,7 +17,7 @@ public class PaymentHTTPClient {
         Response dtuPayTransactionResponse =
                 w.request().post(Entity.json(transaction));
 
-        return dtuPayTransactionResponse.toString();
+        return dtuPayTransactionResponse.readEntity(String.class);
     }
 
 }
