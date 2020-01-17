@@ -1,8 +1,12 @@
 package ws18.Reporting;
 
 import ws18.Control.ControlReg;
+import ws18.HTTPClients.FastmoneyBankHTTPClient;
+import ws18.HTTPClients.PaymentHTTPClient;
 import ws18.Helper.DateTimeHelper;
 import ws18.Model.*;
+import ws18.Model.Fastmoney.FastmoneyAccount;
+import ws18.Model.Fastmoney.User;
 import ws18.Service.IReportingService;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
@@ -19,14 +23,20 @@ import static org.junit.Assert.assertEquals;
 public class ReportingSteps {
 
     private IReportingService reportingService;
+    private PaymentHTTPClient paymentHTTPClient;
+    private FastmoneyBankHTTPClient fastmoneyBankHTTPClient;
     private Customer currentCustomer;
     private Merchant currentMerchant;
+    private FastmoneyAccount currentFastmoneyCustomer;
+    private FastmoneyAccount currentFastMoneyMerchant;
     private ArrayList<CustomerReportTransaction> customerTransactions;
     private ArrayList<MerchantReportTransaction> merchantReportTransactions;
 
     @Before
     public void setUp() {
         this.reportingService = ControlReg.getReportingService();
+        this.paymentHTTPClient = ControlReg.getPaymentHTTPClient();
+        this.fastmoneyBankHTTPClient = ControlReg.getFastMoneyBankHTTPClient();
     }
 
     @Given("a registered customer with an account")
@@ -37,6 +47,18 @@ public class ReportingSteps {
         this.currentCustomer.setLastName("Doe");
         this.currentCustomer.setAccountId("Some value for testing");
         this.currentCustomer.setTransactionIds(new ArrayList<>());
+
+        this.currentFastmoneyCustomer = new FastmoneyAccount();
+        this.currentFastmoneyCustomer.setBalance(1000);
+        this.currentFastmoneyCustomer.setUser(
+                new User(
+                        "Jane",
+                        "Doe",
+                        "888888-2222"
+                )
+        );
+
+        this.fastmoneyBankHTTPClient.createAccount(this.currentFastmoneyCustomer);
     }
 
     @Given("the customer has performed atleast one transaction")
@@ -51,7 +73,8 @@ public class ReportingSteps {
                         new Date().getTime(),
                         new Token());
 
-        String transactionId = this.reportingService.saveTransaction(transaction);
+        // String transactionId = this.reportingService.saveTransaction(transaction);
+        String transactionId = this.paymentHTTPClient.saveDTUPayTransaction(transaction);
 
         this.currentCustomer.getTransactionIds().add(transactionId);
 
