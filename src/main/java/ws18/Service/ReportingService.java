@@ -27,10 +27,23 @@ public class ReportingService implements IReportingService {
         for (String transactionId : customer.getTransactionIds()) {
             DTUPayTransaction transaction = this.reportDatabase.getTransactionById(transactionId);
 
-            CustomerReportTransaction reportTransaction =
-                    new CustomerReportTransaction(transaction, customer);
+            if (transaction != null) {
+                CustomerReportTransaction reportTransaction =
+                        new CustomerReportTransaction(transaction, customer);
 
-            result.add(reportTransaction);
+                result.add(reportTransaction);
+            }
+
+            /*
+            try {
+                CustomerReportTransaction reportTransaction =
+                        new CustomerReportTransaction(transaction, customer);
+
+                result.add(reportTransaction);
+            } catch (NullPointerException ex) {
+                ex.getMessage();
+            }*/
+
         }
 
         return result;
@@ -45,11 +58,13 @@ public class ReportingService implements IReportingService {
         for (String transactionId : customer.getTransactionIds()) {
             DTUPayTransaction transaction = this.reportDatabase.getTransactionById(transactionId);
 
-            if (transaction.getTime() > new Date().getTime() - fromTime) {
-                CustomerReportTransaction reportTransaction =
-                        new CustomerReportTransaction(transaction, customer);
+            if (transaction != null) {
+                if (transaction.getTime() > new Date().getTime() - fromTime) {
+                    CustomerReportTransaction reportTransaction =
+                            new CustomerReportTransaction(transaction, customer);
 
-                result.add(reportTransaction);
+                    result.add(reportTransaction);
+                }
             }
         }
 
@@ -65,14 +80,16 @@ public class ReportingService implements IReportingService {
         for (String transactionId : merchant.getTransactionIds()) {
             DTUPayTransaction transaction = this.reportDatabase.getTransactionById(transactionId);
 
-            MerchantReportTransaction merchantReportTransaction =
-                    new MerchantReportTransaction(
-                            transaction.getAmount(),
-                            transaction.getDescription(),
-                            transaction.getTime(),
-                            transaction.getToken());
+            if (transaction != null) {
+                MerchantReportTransaction merchantReportTransaction =
+                        new MerchantReportTransaction(
+                                transaction.getAmount(),
+                                transaction.getDescription(),
+                                transaction.getTime(),
+                                transaction.getToken());
 
-            result.add(merchantReportTransaction);
+                result.add(merchantReportTransaction);
+            }
         }
 
         return result;
@@ -86,15 +103,17 @@ public class ReportingService implements IReportingService {
         for (String transactionId : merchant.getTransactionIds()) {
             DTUPayTransaction transaction = this.reportDatabase.getTransactionById(transactionId);
 
-            if (transaction.getTime() > new Date().getTime() - fromTime) {
-                MerchantReportTransaction merchantReportTransaction =
-                        new MerchantReportTransaction(
-                                transaction.getAmount(),
-                                transaction.getDescription(),
-                                transaction.getTime(),
-                                transaction.getToken());
+            if (transaction != null) {
+                if (transaction.getTime() > new Date().getTime() - fromTime) {
+                    MerchantReportTransaction merchantReportTransaction =
+                            new MerchantReportTransaction(
+                                    transaction.getAmount(),
+                                    transaction.getDescription(),
+                                    transaction.getTime(),
+                                    transaction.getToken());
 
-                result.add(merchantReportTransaction);
+                    result.add(merchantReportTransaction);
+                }
             }
         }
 
