@@ -33,17 +33,6 @@ public class ReportingService implements IReportingService {
 
                 result.add(reportTransaction);
             }
-
-            /*
-            try {
-                CustomerReportTransaction reportTransaction =
-                        new CustomerReportTransaction(transaction, customer);
-
-                result.add(reportTransaction);
-            } catch (NullPointerException ex) {
-                ex.getMessage();
-            }*/
-
         }
 
         return result;
