@@ -16,15 +16,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class ReportingControllerTest {
 
     private ReportingController reportingController = new ReportingController();
-    private String customerCpr = "101097-0101";
-    private String merchantCpr = "202097-0202";
+    private String customerCpr = "0000-0000";
+    private String merchantCpr = "1111-0000";
     private String transactionId = "a7436627-ab02-4ecd-9162-43f610cbc427";
     private long dateFrom = DateTimeHelper.MONTH_IN_MILLIS;
 
     @Autowired
     private MockMvc mockMvc;
 
-    /*
+
     @Test
     void getAllTransactions() throws Exception {
         mockMvc.perform(get("/transactions"))
@@ -59,6 +59,6 @@ class ReportingControllerTest {
     void getMerchantTransactionsByIdsFromThenToNow() throws Exception {
         mockMvc.perform(get("/transactions/merchant/" + merchantCpr + "/" + dateFrom))
                 .andExpect(status().isOk());
-    }*/
+    }
 
 }
