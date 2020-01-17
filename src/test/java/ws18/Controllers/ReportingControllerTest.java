@@ -30,11 +30,12 @@ class ReportingControllerTest {
                 .andExpect(status().isOk());
     }
 
+    /*
     @Test
     void getTransactionById() throws Exception {
         mockMvc.perform(get("/transactions/" + transactionId))
                 .andExpect(status().isOk());
-    }
+    }*/
 
     @Test
     void getCustomerTransactionsByIds() throws Exception {
