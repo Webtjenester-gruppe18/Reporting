@@ -1,5 +1,7 @@
 package ws18.Reporting;
 
+import org.junit.Assert;
+import org.mockito.Mock;
 import ws18.Control.ControlReg;
 import ws18.HTTPClients.FastmoneyBankHTTPClient;
 import ws18.HTTPClients.PaymentHTTPClient;
@@ -13,6 +15,8 @@ import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+
+import static org.mockito.Mockito.*;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -31,6 +35,7 @@ public class ReportingSteps {
     private FastmoneyAccount currentFastMoneyMerchant;
     private ArrayList<CustomerReportTransaction> customerTransactions;
     private ArrayList<MerchantReportTransaction> merchantReportTransactions;
+    private @Mock ArrayList<CustomerReportTransaction> mockedCustomerReportTransactions;
 
     @Before
     public void setUp() {
@@ -142,9 +147,7 @@ public class ReportingSteps {
                         new Date().getTime(),
                         new Token());
 
-        // String transactionId = this.reportingService.saveTransaction(transaction);
-        String transactionId = this.paymentHTTPClient.saveDTUPayTransaction(transaction);
-        System.out.println("----- TransactionId " + transactionId);
+        String transactionId = this.reportingService.saveTransaction(transaction);
 
         this.currentCustomer.getTransactionIds().add(transactionId);
 
@@ -153,6 +156,17 @@ public class ReportingSteps {
 
     @When("the customer requests for an overview")
     public void theCustomerRequestsForAnOverview() {
+        for (String transactionId : this.currentCustomer.getTransactionIds()) {
+            DTUPayTransaction transaction = this.reportDatabase.getTransactionById(transactionId);
+        }
+
+        DTUPayTransaction transaction = new DTUPayTransaction();
+
+        when(mockedCustomerReportTransactions.get(0)).thenReturn(new CustomerReportTransaction(
+                transaction,
+                this.currentCustomer
+        ));
+
         this.customerTransactions = this.reportingService.getCustomerTransactionsByIds(this.currentCustomer.getAccountId());
     }
 
@@ -177,7 +191,7 @@ public class ReportingSteps {
         String transactionId = this.paymentHTTPClient.saveDTUPayTransaction(transaction);
         this.currentCustomer.getTransactionIds().add(transactionId);
 
-        assertEquals(1, this.reportingService.getCustomerTransactionsByIds(this.currentCustomer.getCprNumber()).size()); //this.currentCustomer.getTransactionIds().size());
+        assertEquals(1, this.reportingService.getCustomerTransactionsByIds(this.currentCustomer.getCprNumber()).size());
     }
 
     @When("the customer requests for an monthly overview")
@@ -244,8 +258,5 @@ public class ReportingSteps {
     }
 
     @After
-    public void tearDown() {
-        this.fastmoneyBankHTTPClient.deleteAccount(this.currentCustomer.getAccountId());
-        this.fastmoneyBankHTTPClient.deleteAccount(this.currentMerchant.getAccountId());
-    }
+    public void tearDown() { }
 }
