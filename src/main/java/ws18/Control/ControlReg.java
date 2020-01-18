@@ -9,6 +9,7 @@ import ws18.Service.*;
 public class ControlReg {
     private static ExceptionContainer exceptionContainer;
     private static IReportingService reportingService;
+    private static ILocalReportingService localReportingService;
     private static IReportDatabase reportDatabase;
     private static UserManagerHTTPClient userManagerHTTPClient;
     private static PaymentHTTPClient paymentHTTPClient;
@@ -22,6 +23,11 @@ public class ControlReg {
     public static IReportingService getReportingService() {
         if (reportingService == null) reportingService = new ReportingService();
         return reportingService;
+    }
+
+    public static ILocalReportingService getLocalReportingService() {
+        if (localReportingService == null) localReportingService = new LocalReportingService();
+        return localReportingService;
     }
 
     public static IReportDatabase getReportDatabase() {
