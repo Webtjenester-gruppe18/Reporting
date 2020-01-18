@@ -21,7 +21,7 @@ public class ReportingSteps {
     private ILocalReportingService localReportingService;
     private Customer currentCustomer;
     private Merchant currentMerchant;
-    private ArrayList<CustomerReportTransaction> customerTransactions;
+    private ArrayList<CustomerReportTransaction> customerReportTransactions;
     private ArrayList<MerchantReportTransaction> merchantReportTransactions;
 
     @Before
@@ -60,12 +60,12 @@ public class ReportingSteps {
 
     @When("the customer requests for an overview")
     public void theCustomerRequestsForAnOverview() {
-        this.customerTransactions = this.localReportingService.getCustomerTransactionsByIds(this.currentCustomer);
+        this.customerReportTransactions = this.localReportingService.getCustomerTransactionsByIds(this.currentCustomer);
     }
 
     @Then("an overview is create with one transaction")
     public void anOverviewIsCreateWithOneTransaction() {
-        assertEquals(1, this.customerTransactions.size());
+        assertEquals(1, this.customerReportTransactions.size());
     }
 
     @Given("the customer has performed atleast one transaction in the last month")
@@ -89,7 +89,7 @@ public class ReportingSteps {
 
     @When("the customer requests for an monthly overview")
     public void theCustomerRequestsForAnMonthlyOverview() {
-        this.customerTransactions = this.localReportingService.getCustomerTransactionsByIdsFromThenToNow(this.currentCustomer, DateTimeHelper.MONTH_IN_MILLIS);
+        this.customerReportTransactions = this.localReportingService.getCustomerTransactionsByIdsFromThenToNow(this.currentCustomer, DateTimeHelper.MONTH_IN_MILLIS);
     }
 
     @Given("a registered merchant with an account")
