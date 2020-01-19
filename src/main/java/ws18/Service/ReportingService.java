@@ -1,3 +1,4 @@
+/*
 package ws18.Service;
 
 import ws18.Control.ControlReg;
@@ -140,3 +141,4 @@ public class ReportingService implements IReportingService {
         return this.reportDatabase.saveTransaction(transaction);
     }
 }
+*/

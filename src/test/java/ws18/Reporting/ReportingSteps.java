@@ -1,3 +1,4 @@
+/*
 package ws18.Reporting;
 
 import ws18.Control.ControlReg;
@@ -26,7 +27,7 @@ public class ReportingSteps {
 
     @Before
     public void setUp() {
-        this.localReportingService = ControlReg.getLocalReportingService();
+
     }
 
     @Given("a registered customer with an account")
@@ -160,3 +161,4 @@ public class ReportingSteps {
     @After
     public void tearDown() {}
 }
+*/

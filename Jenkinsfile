@@ -3,7 +3,7 @@ pipeline {
    stages {
      stage('Test') {
        steps {
-         sh 'mvn clean install'
+         sh 'mvn test'
        }
      }
       stage('Build') {
@@ -11,12 +11,5 @@ pipeline {
              sh 'docker build --tag reportingimage:latest . '
            }
          }
-      stage('Deploy') {
-           steps {
-             sh '''docker stop reporting || true && docker rm reporting || true;
-             docker run -d -p 7272:8080 --name reporting reportingimage:latest
-             '''
-           }
-      }
    }
  }
