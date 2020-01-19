@@ -3,7 +3,7 @@ package ws18.Reporting;
 import ws18.Control.ControlReg;
 import ws18.Helper.DateTimeHelper;
 import ws18.Model.*;
-import ws18.Service.IReportingService;
+import ws18.Service.ILocalReportingService;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
@@ -18,15 +18,15 @@ import static org.junit.Assert.assertEquals;
 
 public class ReportingSteps {
 
-    private IReportingService reportingService;
+    private ILocalReportingService localReportingService;
     private Customer currentCustomer;
     private Merchant currentMerchant;
-    private ArrayList<CustomerReportTransaction> customerTransactions;
+    private ArrayList<CustomerReportTransaction> customerReportTransactions;
     private ArrayList<MerchantReportTransaction> merchantReportTransactions;
 
     @Before
     public void setUp() {
-        this.reportingService = ControlReg.getReportingService();
+        this.localReportingService = ControlReg.getLocalReportingService();
     }
 
     @Given("a registered customer with an account")
@@ -51,7 +51,7 @@ public class ReportingSteps {
                         new Date().getTime(),
                         new Token());
 
-        String transactionId = this.reportingService.saveTransaction(transaction);
+        String transactionId = this.localReportingService.saveTransaction(transaction);
 
         this.currentCustomer.getTransactionIds().add(transactionId);
 
@@ -60,12 +60,12 @@ public class ReportingSteps {
 
     @When("the customer requests for an overview")
     public void theCustomerRequestsForAnOverview() {
-        this.customerTransactions = this.reportingService.getCustomerTransactionsByIds(this.currentCustomer.getAccountId());
+        this.customerReportTransactions = this.localReportingService.getCustomerTransactionsByIds(this.currentCustomer);
     }
 
     @Then("an overview is create with one transaction")
     public void anOverviewIsCreateWithOneTransaction() {
-        assertEquals(1, this.customerTransactions.size());
+        assertEquals(1, this.customerReportTransactions.size());
     }
 
     @Given("the customer has performed atleast one transaction in the last month")
@@ -80,7 +80,7 @@ public class ReportingSteps {
                         new Date().getTime(),
                         new Token());
 
-        String transactionId = this.reportingService.saveTransaction(transaction);
+        String transactionId = this.localReportingService.saveTransaction(transaction);
 
         this.currentCustomer.getTransactionIds().add(transactionId);
 
@@ -89,7 +89,7 @@ public class ReportingSteps {
 
     @When("the customer requests for an monthly overview")
     public void theCustomerRequestsForAnMonthlyOverview() {
-        this.customerTransactions = this.reportingService.getCustomerTransactionsByIdsFromThenToNow(this.currentCustomer.getAccountId(), DateTimeHelper.MONTH_IN_MILLIS);
+        this.customerReportTransactions = this.localReportingService.getCustomerTransactionsByIdsFromThenToNow(this.currentCustomer, DateTimeHelper.MONTH_IN_MILLIS);
     }
 
     @Given("a registered merchant with an account")
@@ -110,7 +110,7 @@ public class ReportingSteps {
                         new Date().getTime(),
                         new Token());
 
-        String transactionId = this.reportingService.saveTransaction(transaction);
+        String transactionId = this.localReportingService.saveTransaction(transaction);
 
         this.currentMerchant.getTransactionIds().add(transactionId);
 
@@ -119,7 +119,7 @@ public class ReportingSteps {
 
     @When("the merchant requests for an transaction overview")
     public void theMerchantRequestsForAnTransactionOverview() {
-        this.merchantReportTransactions = this.reportingService.getMerchantTransactionsByIds(this.currentMerchant.getAccountId());
+        this.merchantReportTransactions = this.localReportingService.getMerchantTransactionsByIds(this.currentMerchant);
     }
 
     @Then("an merchant transaction overview is created")
@@ -139,7 +139,7 @@ public class ReportingSteps {
                         new Date().getTime(),
                         new Token());
 
-        String transactionId = this.reportingService.saveTransaction(transaction);
+        String transactionId = this.localReportingService.saveTransaction(transaction);
 
         this.currentMerchant.getTransactionIds().add(transactionId);
 
@@ -149,7 +149,7 @@ public class ReportingSteps {
     @When("the merchant requests for an monthly overview")
     public void theMerchantRequestsForAnMonthlyOverview() {
         this.merchantReportTransactions =
-                this.reportingService.getMerchantTransactionsByIdsFromThenToNow(this.currentMerchant.getAccountId(), DateTimeHelper.MONTH_IN_MILLIS);
+                this.localReportingService.getMerchantTransactionsByIdsFromThenToNow(this.currentMerchant, DateTimeHelper.MONTH_IN_MILLIS);
     }
 
     @Then("an monthly merchant transaction report is created")
@@ -157,8 +157,6 @@ public class ReportingSteps {
         assertEquals(1, this.merchantReportTransactions.size());
     }
 
-    /*
     @After
-    public void tearDown() throws BankServiceException_Exception {
-    }*/
+    public void tearDown() {}
 }
