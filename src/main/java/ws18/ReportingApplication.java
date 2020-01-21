@@ -3,9 +3,7 @@ package ws18;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
-import ws18.messagingutils.EventReceiverImpl;
-import ws18.messagingutils.EventSenderImpl;
-import ws18.messagingutils.IEventSender;
+import ws18.messagingutils.*;
 import ws18.service.ReportingService;
 
 /**
@@ -22,9 +20,9 @@ public class ReportingApplication {
     }
 
     private void startUp() throws Exception {
-        IEventSender eventSender = new EventSenderImpl();
+        IEventSender eventSender = new RabbitMqSender();
         ReportingService reportingService = new ReportingService(eventSender);
-        new EventReceiverImpl(reportingService).listen();
+        new RabbitMqListener(reportingService).listen();
     }
 
 }
