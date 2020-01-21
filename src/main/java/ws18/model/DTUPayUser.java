@@ -2,6 +2,10 @@ package ws18.model;
 
 import java.util.ArrayList;
 
+/**
+ * @author Ali Moussa, s175119
+ */
+
 public abstract class DTUPayUser {
 
     private String accountId;

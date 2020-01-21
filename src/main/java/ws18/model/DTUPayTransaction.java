@@ -3,6 +3,10 @@ package ws18.model;
 import java.math.BigDecimal;
 import java.util.UUID;
 
+/**
+ * @author Ali Moussa, s175119
+ */
+
 public class DTUPayTransaction {
 
     private String transactionId;

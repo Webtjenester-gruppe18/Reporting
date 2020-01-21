@@ -4,6 +4,10 @@ import ws18.model.DTUPayTransaction;
 
 import java.util.ArrayList;
 
+/**
+ * @author Ali Moussa, s175119
+ */
+
 public interface IReportDatabase {
 
     DTUPayTransaction getTransactionById(String transactionId);

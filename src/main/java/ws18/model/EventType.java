@@ -1,5 +1,9 @@
 package ws18.model;
 
+/**
+ * @author Ali Moussa, s175119
+ */
+
 public enum EventType {
     //Reporting
     RETRIEVE_CUSTOMER_REPORTS,

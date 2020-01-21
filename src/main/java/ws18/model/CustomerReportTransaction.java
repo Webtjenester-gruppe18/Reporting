@@ -2,6 +2,10 @@ package ws18.model;
 
 import java.math.BigDecimal;
 
+/**
+ * @author Ali Moussa, s175119
+ */
+
 public class CustomerReportTransaction extends ReportTransaction {
 
     private String merchantAccountId;

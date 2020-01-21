@@ -4,6 +4,8 @@ Feature: Reporting feature
     # (amount of money transferred, with which merchant, and token used) in a given time period.
   # This forms the bases of a monthly status report sent to the customer.
 
+  # @author Ali Moussa, s175119
+
   Scenario: Report
     When the service receives the "REQUEST_TRANSACTIONS_RESPONSE" event
     Then the report is created

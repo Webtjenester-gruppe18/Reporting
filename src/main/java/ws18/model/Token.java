@@ -2,6 +2,10 @@ package ws18.model;
 
 import java.util.UUID;
 
+/**
+ * @author Ali Moussa, s175119
+ */
+
 public class Token {
 
     private String value;

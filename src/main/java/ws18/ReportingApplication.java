@@ -8,6 +8,10 @@ import ws18.messagingutils.EventSenderImpl;
 import ws18.messagingutils.IEventSender;
 import ws18.service.ReportingService;
 
+/**
+ * @author Ali Moussa, s175119
+ */
+
 @SpringBootApplication
 @EnableSwagger2
 public class ReportingApplication {

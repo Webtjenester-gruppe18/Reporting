@@ -8,6 +8,9 @@ import com.rabbitmq.client.DeliverCallback;
 import gherkin.deps.com.google.gson.Gson;
 import ws18.model.Event;
 
+/**
+ * @author Emil Vinkel, s175107
+ */
 
 public class EventReceiverImpl {
     private IEventReceiver eventReceiver;
