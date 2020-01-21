@@ -1,4 +1,4 @@
-package ws18.Model;
+package ws18.model;
 
 public class Customer extends DTUPayUser {
 

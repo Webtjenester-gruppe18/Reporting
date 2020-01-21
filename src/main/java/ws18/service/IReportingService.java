@@ -1,6 +1,6 @@
-package ws18.Service;
+package ws18.service;
 
-import ws18.Model.*;
+import ws18.model.*;
 
 import java.util.ArrayList;
 

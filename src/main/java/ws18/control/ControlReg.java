@@ -1,7 +1,7 @@
-package ws18.Control;
-import ws18.Database.*;
-import ws18.Exception.ExceptionContainer;
-import ws18.Service.*;
+package ws18.control;
+import ws18.database.*;
+import ws18.exception.ExceptionContainer;
+import ws18.service.*;
 
 public class ControlReg {
     private static ExceptionContainer exceptionContainer;

@@ -4,10 +4,10 @@ import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import ws18.Control.ControlReg;
-import ws18.Helper.DateTimeHelper;
-import ws18.Model.*;
-import ws18.Service.IReportingService;
+import ws18.control.ControlReg;
+import ws18.helper.DateTimeHelper;
+import ws18.model.*;
+import ws18.service.IReportingService;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;

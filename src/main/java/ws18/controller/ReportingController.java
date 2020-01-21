@@ -1,14 +1,13 @@
-package ws18.Controller;
+package ws18.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ws18.Control.ControlReg;
-import ws18.Helper.DateTimeHelper;
-import ws18.Model.CustomerReportTransaction;
-import ws18.Model.DTUPayTransaction;
-import ws18.Model.MerchantReportTransaction;
-import ws18.Service.IReportingService;
+import ws18.control.ControlReg;
+import ws18.model.CustomerReportTransaction;
+import ws18.model.DTUPayTransaction;
+import ws18.model.MerchantReportTransaction;
+import ws18.service.IReportingService;
 
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;

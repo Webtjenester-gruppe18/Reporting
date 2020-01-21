@@ -1,10 +1,10 @@
-package ws18.Service;
+package ws18.service;
 
-import ws18.Control.ControlReg;
-import ws18.Database.IReportDatabase;
-import ws18.Model.CustomerReportTransaction;
-import ws18.Model.DTUPayTransaction;
-import ws18.Model.MerchantReportTransaction;
+import ws18.control.ControlReg;
+import ws18.database.IReportDatabase;
+import ws18.model.CustomerReportTransaction;
+import ws18.model.DTUPayTransaction;
+import ws18.model.MerchantReportTransaction;
 
 import java.util.ArrayList;
 

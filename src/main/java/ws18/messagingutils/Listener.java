@@ -5,9 +5,9 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ws18.Model.DTUPayTransaction;
-import ws18.Model.Event;
-import ws18.Model.EventType;
+import ws18.model.DTUPayTransaction;
+import ws18.model.Event;
+import ws18.model.EventType;
 import java.util.ArrayList;
 
 @Service

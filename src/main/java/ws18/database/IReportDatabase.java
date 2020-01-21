@@ -1,6 +1,6 @@
-package ws18.Database;
+package ws18.database;
 
-import ws18.Model.DTUPayTransaction;
+import ws18.model.DTUPayTransaction;
 
 import java.util.ArrayList;
 

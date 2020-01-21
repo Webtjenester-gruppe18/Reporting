@@ -1,4 +1,4 @@
-package ws18.Model;
+package ws18.model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
