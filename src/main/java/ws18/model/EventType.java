@@ -1,4 +1,4 @@
-package ws18.Model;
+package ws18.model;
 
 public enum EventType {
     //Reporting
@@ -6,6 +6,4 @@ public enum EventType {
     RETRIEVE_MERCHANT_REPORTS,
     REQUEST_TRANSACTIONS_RESPONSE,
     REQUEST_TRANSACTIONS_SUCCEED
-
-
 }

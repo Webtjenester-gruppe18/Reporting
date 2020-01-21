@@ -1,4 +1,4 @@
-package ws18.Helper;
+package ws18.helper;
 
 public class DateTimeHelper {
 

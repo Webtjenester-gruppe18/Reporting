@@ -1,4 +1,4 @@
-package ws18.Exception;
+package ws18.exception;
 
 public class ExceptionContainer {
 
