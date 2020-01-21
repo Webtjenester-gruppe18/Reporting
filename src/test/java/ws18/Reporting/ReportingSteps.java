@@ -1,163 +1,56 @@
 package ws18.Reporting;
 
-import io.cucumber.java.Before;
-import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import ws18.control.ControlReg;
-import ws18.helper.DateTimeHelper;
-import ws18.model.*;
-import ws18.service.IReportingService;
+import ws18.messagingutils.IEventSender;
+import ws18.model.Customer;
+import ws18.model.CustomerReportTransaction;
+import ws18.model.Merchant;
+import ws18.model.MerchantReportTransaction;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
 
-import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
 
 public class ReportingSteps {
 
-    private IReportingService reportingService;
     private Customer currentCustomer;
     private Merchant currentMerchant;
     private ArrayList<CustomerReportTransaction> customerTransactions;
     private ArrayList<MerchantReportTransaction> merchantReportTransactions;
+    private IEventSender eventSender = mock(IEventSender.class);
+    //private ILocalReportingService localReportingService = new LocalReportingService(eventSender);
+    private String errormessage = "";
 
-    @Before
-    public void setUp() {
-        this.reportingService = ControlReg.getReportingService();
+    @When("the service receives the {string} event")
+    public void theServiceReceivesTheEvent(String string) {
+        /*
+        Event event = new Event();
+        event.setType(EventType.valueOf(string));
+        if (event.getType().equals(EventType.REQUEST_FOR_NEW_TOKENS)||event.getType().equals(EventType.RETRIEVE_TOKENS)) {
+            event.setObject("123");
+        }else if(event.getType().equals(EventType.TOKEN_VALIDATION_REQUEST)){
+            Token token = tokenManager.generateToken("456");
+            PaymentRequest request= new PaymentRequest();
+            request.setAmount(BigDecimal.ONE);
+            request.setCpr("456");
+            request.setDescription("Test");
+            request.setToken(token);
+            event.setObject(request);
+        }
+
+        tokenManager.receiveEvent(event);*/
     }
 
-    @Given("a registered customer with an account")
-    public void aRegisteredCustomerWithAnAccount() {
-        this.currentCustomer = new Customer();
-        this.currentCustomer.setCprNumber("888888-2222");
-        this.currentCustomer.setFirstName("Jane");
-        this.currentCustomer.setLastName("Doe");
-        this.currentCustomer.setAccountId("Some value for testing");
-        this.currentCustomer.setTransactionIds(new ArrayList<>());
+    @Then("the report is created")
+    public void theReportIsCreated() {
+        // Write code here that turns the phrase above into concrete actions
+        throw new cucumber.api.PendingException();
     }
 
-    @Given("the customer has performed atleast one transaction")
-    public void theCustomerHasPerformedAtleastOneTransaction() {
-
-        DTUPayTransaction transaction =
-                new DTUPayTransaction(
-                        BigDecimal.valueOf(1111),
-                        this.currentCustomer.getAccountId(),
-                        "Some Value",
-                        "Comment",
-                        new Date().getTime(),
-                        new Token());
-
-        String transactionId = this.reportingService.saveTransaction(transaction);
-
-        this.currentCustomer.getTransactionIds().add(transactionId);
-
-        assertEquals(1, this.currentCustomer.getTransactionIds().size());
+    @Then("the {string} event is broadcast")
+    public void theEventIsBroadcast(String string) {
+        // Write code here that turns the phrase above into concrete actions
+        throw new cucumber.api.PendingException();
     }
-
-    @When("the customer requests for an overview")
-    public void theCustomerRequestsForAnOverview() {
-        this.customerTransactions = this.reportingService.getCustomerTransactionsByIds(this.currentCustomer.getAccountId());
-    }
-
-    @Then("an overview is create with one transaction")
-    public void anOverviewIsCreateWithOneTransaction() {
-        assertEquals(1, this.customerTransactions.size());
-    }
-
-    @Given("the customer has performed atleast one transaction in the last month")
-    public void theCustomerHasPerformedAtleastOneTransactionInTheLastMonth() {
-
-        DTUPayTransaction transaction =
-                new DTUPayTransaction(
-                        BigDecimal.valueOf(1111),
-                        this.currentCustomer.getAccountId(),
-                        "Some Value",
-                        "Comment",
-                        new Date().getTime(),
-                        new Token());
-
-        String transactionId = this.reportingService.saveTransaction(transaction);
-
-        this.currentCustomer.getTransactionIds().add(transactionId);
-
-        assertEquals(1, this.currentCustomer.getTransactionIds().size());
-    }
-
-    @When("the customer requests for an monthly overview")
-    public void theCustomerRequestsForAnMonthlyOverview() {
-        this.customerTransactions = this.reportingService.getCustomerTransactionsByIdsFromThenToNow(this.currentCustomer.getAccountId(), DateTimeHelper.MONTH_IN_MILLIS);
-    }
-
-    @Given("a registered merchant with an account")
-    public void aRegisteredMerchantWithAnAccount() {
-        Merchant merchant = new Merchant("AccountId", "John", "Doe", "0000-000");
-
-        this.currentMerchant = merchant;
-    }
-
-    @Given("the merchant has performed atleast one transaction")
-    public void theMerchantHasPerformedAtleastOneTransaction() {
-        DTUPayTransaction transaction =
-                new DTUPayTransaction(
-                        BigDecimal.valueOf(2222),
-                        this.currentMerchant.getAccountId(),
-                        "Some Value",
-                        "Comment",
-                        new Date().getTime(),
-                        new Token());
-
-        String transactionId = this.reportingService.saveTransaction(transaction);
-
-        this.currentMerchant.getTransactionIds().add(transactionId);
-
-        assertEquals(1, this.currentMerchant.getTransactionIds().size());
-    }
-
-    @When("the merchant requests for an transaction overview")
-    public void theMerchantRequestsForAnTransactionOverview() {
-        this.merchantReportTransactions = this.reportingService.getMerchantTransactionsByIds(this.currentMerchant.getAccountId());
-    }
-
-    @Then("an merchant transaction overview is created")
-    public void anMerchantTransactionOverviewIsCreated() {
-        assertEquals(1, this.merchantReportTransactions.size());
-    }
-
-
-    @Given("the merchant has performed one transaction in the last month")
-    public void theMerchantHasPerformedOneTransactionInTheLastMonth() {
-        DTUPayTransaction transaction =
-                new DTUPayTransaction(
-                        BigDecimal.valueOf(2222),
-                        this.currentMerchant.getAccountId(),
-                        "Some Value",
-                        "Comment",
-                        new Date().getTime(),
-                        new Token());
-
-        String transactionId = this.reportingService.saveTransaction(transaction);
-
-        this.currentMerchant.getTransactionIds().add(transactionId);
-
-        assertEquals(1, this.currentMerchant.getTransactionIds().size());
-    }
-
-    @When("the merchant requests for an monthly overview")
-    public void theMerchantRequestsForAnMonthlyOverview() {
-        this.merchantReportTransactions =
-                this.reportingService.getMerchantTransactionsByIdsFromThenToNow(this.currentMerchant.getAccountId(), DateTimeHelper.MONTH_IN_MILLIS);
-    }
-
-    @Then("an monthly merchant transaction report is created")
-    public void anMonthlyMerchantTransactionReportIsCreated() {
-        assertEquals(1, this.merchantReportTransactions.size());
-    }
-
-    /*
-    @After
-    public void tearDown() throws BankServiceException_Exception {
-    }*/
 }

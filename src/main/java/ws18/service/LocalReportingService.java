@@ -3,23 +3,23 @@ package ws18.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ws18.control.ControlReg;
 import ws18.database.IReportDatabase;
-import ws18.model.CustomerReportTransaction;
-import ws18.model.DTUPayTransaction;
-import ws18.model.MerchantReportTransaction;
+import ws18.messagingutils.IEventReceiver;
+import ws18.messagingutils.IEventSender;
+import ws18.model.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 
-public abstract class ReportingService implements IReportingService, IEventReceiver {
+public abstract class LocalReportingService implements ILocalReportingService, IEventReceiver {
 
     private final ObjectMapper objectMapper;
     private IReportDatabase reportDatabase = ControlReg.getReportDatabase();
     private IEventSender eventSender;
 
-    public ReportingService(IEventSender eventSender) {
+    public LocalReportingService(IEventSender eventSender) {
         this.objectMapper = new ObjectMapper();
         this.eventSender = eventSender;
     }
-
 
     @Override
     public DTUPayTransaction getTransactionById(String transactionId) {
@@ -27,11 +27,10 @@ public abstract class ReportingService implements IReportingService, IEventRecei
     }
 
     @Override
-    public ArrayList<CustomerReportTransaction> getCustomerTransactionsByIds(String customerCpr) {
+    public ArrayList<CustomerReportTransaction> getCustomerTransactionsByIds(Customer customer) {
 
         ArrayList<CustomerReportTransaction> result = new ArrayList<>();
 
-        /*
         for (String transactionId : customer.getTransactionIds()) {
             DTUPayTransaction transaction = this.reportDatabase.getTransactionById(transactionId);
 
@@ -39,17 +38,16 @@ public abstract class ReportingService implements IReportingService, IEventRecei
                     new CustomerReportTransaction(transaction, customer);
 
             result.add(reportTransaction);
-        }*/
+        }
 
         return result;
     }
 
     @Override
-    public ArrayList<CustomerReportTransaction> getCustomerTransactionsByIdsFromThenToNow(String customerCpr, long fromTime) {
+    public ArrayList<CustomerReportTransaction> getCustomerTransactionsByIdsFromThenToNow(Customer customer, long fromTime) {
 
         ArrayList<CustomerReportTransaction> result = new ArrayList<>();
 
-        /*
         for (String transactionId : customer.getTransactionIds()) {
             DTUPayTransaction transaction = this.reportDatabase.getTransactionById(transactionId);
 
@@ -59,17 +57,16 @@ public abstract class ReportingService implements IReportingService, IEventRecei
 
                 result.add(reportTransaction);
             }
-        }*/
+        }
 
         return result;
     }
 
     @Override
-    public ArrayList<MerchantReportTransaction> getMerchantTransactionsByIds(String merchantCpr) {
+    public ArrayList<MerchantReportTransaction> getMerchantTransactionsByIds(Merchant merchant) {
 
         ArrayList<MerchantReportTransaction> result = new ArrayList<>();
 
-        /*
         for (String transactionId : merchant.getTransactionIds()) {
             DTUPayTransaction transaction = this.reportDatabase.getTransactionById(transactionId);
 
@@ -81,16 +78,15 @@ public abstract class ReportingService implements IReportingService, IEventRecei
                             transaction.getToken());
 
             result.add(merchantReportTransaction);
-        }*/
+        }
 
         return result;
     }
 
     @Override
-    public ArrayList<MerchantReportTransaction> getMerchantTransactionsByIdsFromThenToNow(String merchantCpr, long fromTime) {
+    public ArrayList<MerchantReportTransaction> getMerchantTransactionsByIdsFromThenToNow(Merchant merchant, long fromTime) {
         ArrayList<MerchantReportTransaction> result = new ArrayList<>();
 
-        /*
         for (String transactionId : merchant.getTransactionIds()) {
             DTUPayTransaction transaction = this.reportDatabase.getTransactionById(transactionId);
 
@@ -104,7 +100,7 @@ public abstract class ReportingService implements IReportingService, IEventRecei
 
                 result.add(merchantReportTransaction);
             }
-        }*/
+        }
 
         return result;
     }
@@ -119,13 +115,42 @@ public abstract class ReportingService implements IReportingService, IEventRecei
         return this.reportDatabase.saveTransaction(transaction);
     }
 
+    /*
     @Override
     public void receiveEvent(Event event) throws Exception {
-        if (event.getType().equals(EventType.REQUEST_TRANSACTIONS_RESPONSE)) {
-            ArrayList<DTUPayTransaction> transactions = this.objectMapper.convertValue(event.getObject(), ArrayList.class);
+        if (event.getType().equals(EventType.RETRIEVE_CUSTOMER_REPORTS)) {
+            CustomerReportTransaction customerReportTransaction = objectMapper.convertValue(event.getObject(), CustomerReportTransaction.class);
 
-            Event successResponse = new Event(EventType.REQUEST_TRANSACTIONS_SUCCEED, transactions, RabbitMQValues.DTU_SERVICE_ROUTING_KEY);
-            this.eventSender.sendEvent(successResponse);
+            try {
+                validateToken(paymentRequest.getCpr(), paymentRequest.getToken());
+            } catch (TokenValidationException e) {
+                Event response = new Event(EventType.TOKEN_VALIDATION_FAILED, e, RabbitMQValues.DTU_SERVICE_ROUTING_KEY);
+                eventSender.sendEvent(response);
+                return;
+            }
+            event.setType(EventType.MONEY_TRANSFER_REQUEST);
+            event.setRoutingKey(RabbitMQValues.PAYMENT_SERVICE_ROUTING_KEY);
+            eventSender.sendEvent(event);
+        } else if (event.getType().equals(EventType.REQUEST_FOR_NEW_TOKENS)) {
+            String cpr = objectMapper.convertValue(event.getObject(), String.class);
+
+            try {
+                requestForNewTokens(cpr);
+            } catch (TooManyTokensException e) {
+                Event response = new Event(EventType.TOKEN_GENERATION_FAILED, e, RabbitMQValues.DTU_SERVICE_ROUTING_KEY);
+                eventSender.sendEvent(response);
+                return;
+            }
+
+            Event successResponse = new Event(EventType.TOKEN_GENERATION_SUCCEED, EventType.TOKEN_GENERATION_SUCCEED, RabbitMQValues.DTU_SERVICE_ROUTING_KEY);
+            eventSender.sendEvent(successResponse);
+
+        } else if (event.getType().equals(EventType.RETRIEVE_TOKENS)) {
+            String cpr = objectMapper.convertValue(event.getObject(), String.class);
+            ArrayList<Token> tokens = getUnusedTokensByCpr(cpr);
+            Event successResponse = new Event(EventType.RETRIEVE_TOKENS_SUCCEED, tokens, RabbitMQValues.DTU_SERVICE_ROUTING_KEY);
+            eventSender.sendEvent(successResponse);
         }
-    }
+    }*/
+
 }
