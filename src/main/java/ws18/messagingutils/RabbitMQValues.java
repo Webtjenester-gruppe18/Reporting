@@ -18,6 +18,6 @@ public class RabbitMQValues {
     static final String REPORTING_SERVICE_ROUTING_KEY = "reporting";
 
 
-    public static final String HOST_NAME = "systemtestsmaster_rabbitmq_1";
+    public static final String HOST_NAME = "localhost";
 
 }
