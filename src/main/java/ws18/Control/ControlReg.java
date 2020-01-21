@@ -13,11 +13,11 @@ public class ControlReg {
         return exceptionContainer;
     }
 
-  /*  public static IReportingService getReportingService() {
+    public static IReportingService getReportingService() {
         if (reportingService == null) reportingService = new ReportingService();
         return reportingService;
     }
-*/
+
     public static IReportDatabase getReportDatabase() {
         if (reportDatabase == null) reportDatabase = new InMemoryReportDatabase();
         return reportDatabase;

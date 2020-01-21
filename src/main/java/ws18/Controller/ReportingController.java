@@ -1,4 +1,3 @@
-/*
 package ws18.Controller;
 
 import org.springframework.http.HttpStatus;
@@ -67,4 +66,3 @@ public class ReportingController {
     }
 
 }
-*/

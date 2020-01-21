@@ -1,19 +1,16 @@
-/*
 package ws18.Service;
 
 import ws18.Control.ControlReg;
 import ws18.Database.IReportDatabase;
-import ws18.HTTPClients.UserManagerHTTPClient;
-import ws18.Model.*;
+import ws18.Model.CustomerReportTransaction;
+import ws18.Model.DTUPayTransaction;
+import ws18.Model.MerchantReportTransaction;
 
-import javax.ws.rs.NotFoundException;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class ReportingService implements IReportingService {
 
     private IReportDatabase reportDatabase = ControlReg.getReportDatabase();
-    private UserManagerHTTPClient userManagerHTTPClient = ControlReg.getUserManagerHTTPClient();
 
     @Override
     public DTUPayTransaction getTransactionById(String transactionId) {
@@ -25,22 +22,15 @@ public class ReportingService implements IReportingService {
 
         ArrayList<CustomerReportTransaction> result = new ArrayList<>();
 
-        try {
-            Customer customer = this.userManagerHTTPClient.getCustomerByCpr(customerCpr);
+        /*
+        for (String transactionId : customer.getTransactionIds()) {
+            DTUPayTransaction transaction = this.reportDatabase.getTransactionById(transactionId);
 
-            for (String transactionId : customer.getTransactionIds()) {
-                DTUPayTransaction transaction = this.reportDatabase.getTransactionById(transactionId);
+            CustomerReportTransaction reportTransaction =
+                    new CustomerReportTransaction(transaction, customer);
 
-                if (transaction != null) {
-                    CustomerReportTransaction reportTransaction =
-                            new CustomerReportTransaction(transaction, customer);
-
-                    result.add(reportTransaction);
-                }
-            }
-        } catch (NotFoundException e) {
-            e.getMessage();
-        }
+            result.add(reportTransaction);
+        }*/
 
         return result;
     }
@@ -50,24 +40,17 @@ public class ReportingService implements IReportingService {
 
         ArrayList<CustomerReportTransaction> result = new ArrayList<>();
 
-        try {
-            Customer customer = this.userManagerHTTPClient.getCustomerByCpr(customerCpr);
+        /*
+        for (String transactionId : customer.getTransactionIds()) {
+            DTUPayTransaction transaction = this.reportDatabase.getTransactionById(transactionId);
 
-            for (String transactionId : customer.getTransactionIds()) {
-                DTUPayTransaction transaction = this.reportDatabase.getTransactionById(transactionId);
+            if (transaction.getTime() > new Date().getTime() - fromTime) {
+                CustomerReportTransaction reportTransaction =
+                        new CustomerReportTransaction(transaction, customer);
 
-                if (transaction != null) {
-                    if (transaction.getTime() > new Date().getTime() - fromTime) {
-                        CustomerReportTransaction reportTransaction =
-                                new CustomerReportTransaction(transaction, customer);
-
-                        result.add(reportTransaction);
-                    }
-                }
+                result.add(reportTransaction);
             }
-        } catch (NotFoundException e) {
-            e.getMessage();
-        }
+        }*/
 
         return result;
     }
@@ -77,26 +60,19 @@ public class ReportingService implements IReportingService {
 
         ArrayList<MerchantReportTransaction> result = new ArrayList<>();
 
-        try {
-            Merchant merchant = this.userManagerHTTPClient.getMerchantByCpr(merchantCpr);
+        /*
+        for (String transactionId : merchant.getTransactionIds()) {
+            DTUPayTransaction transaction = this.reportDatabase.getTransactionById(transactionId);
 
-            for (String transactionId : merchant.getTransactionIds()) {
-                DTUPayTransaction transaction = this.reportDatabase.getTransactionById(transactionId);
+            MerchantReportTransaction merchantReportTransaction =
+                    new MerchantReportTransaction(
+                            transaction.getAmount(),
+                            transaction.getDescription(),
+                            transaction.getTime(),
+                            transaction.getToken());
 
-                if (transaction != null) {
-                    MerchantReportTransaction merchantReportTransaction =
-                            new MerchantReportTransaction(
-                                    transaction.getAmount(),
-                                    transaction.getDescription(),
-                                    transaction.getTime(),
-                                    transaction.getToken());
-
-                    result.add(merchantReportTransaction);
-                }
-            }
-        } catch (NotFoundException e) {
-            e.getMessage();
-        }
+            result.add(merchantReportTransaction);
+        }*/
 
         return result;
     }
@@ -105,28 +81,21 @@ public class ReportingService implements IReportingService {
     public ArrayList<MerchantReportTransaction> getMerchantTransactionsByIdsFromThenToNow(String merchantCpr, long fromTime) {
         ArrayList<MerchantReportTransaction> result = new ArrayList<>();
 
-        try {
-            Merchant merchant = this.userManagerHTTPClient.getMerchantByCpr(merchantCpr);
+        /*
+        for (String transactionId : merchant.getTransactionIds()) {
+            DTUPayTransaction transaction = this.reportDatabase.getTransactionById(transactionId);
 
-            for (String transactionId : merchant.getTransactionIds()) {
-                DTUPayTransaction transaction = this.reportDatabase.getTransactionById(transactionId);
+            if (transaction.getTime() > new Date().getTime() - fromTime) {
+                MerchantReportTransaction merchantReportTransaction =
+                        new MerchantReportTransaction(
+                                transaction.getAmount(),
+                                transaction.getDescription(),
+                                transaction.getTime(),
+                                transaction.getToken());
 
-                if (transaction != null) {
-                    if (transaction.getTime() > new Date().getTime() - fromTime) {
-                        MerchantReportTransaction merchantReportTransaction =
-                                new MerchantReportTransaction(
-                                        transaction.getAmount(),
-                                        transaction.getDescription(),
-                                        transaction.getTime(),
-                                        transaction.getToken());
-
-                        result.add(merchantReportTransaction);
-                    }
-                }
+                result.add(merchantReportTransaction);
             }
-        } catch (NotFoundException e) {
-            e.getMessage();
-        }
+        }*/
 
         return result;
     }
@@ -141,4 +110,3 @@ public class ReportingService implements IReportingService {
         return this.reportDatabase.saveTransaction(transaction);
     }
 }
-*/
