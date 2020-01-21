@@ -1,3 +1,4 @@
+/*
 package ws18.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,7 +11,7 @@ import ws18.model.*;
 import java.util.ArrayList;
 import java.util.Date;
 
-public abstract class LocalReportingService implements ILocalReportingService, IEventReceiver {
+public abstract class LocalReportingService implements ReportingService, IEventReceiver {
 
     private final ObjectMapper objectMapper;
     private IReportDatabase reportDatabase = ControlReg.getReportDatabase();
@@ -151,6 +152,7 @@ public abstract class LocalReportingService implements ILocalReportingService, I
             Event successResponse = new Event(EventType.RETRIEVE_TOKENS_SUCCEED, tokens, RabbitMQValues.DTU_SERVICE_ROUTING_KEY);
             eventSender.sendEvent(successResponse);
         }
-    }*/
+    }
 
 }
+*/

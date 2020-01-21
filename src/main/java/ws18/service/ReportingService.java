@@ -3,13 +3,14 @@ package ws18.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ws18.control.ControlReg;
 import ws18.database.IReportDatabase;
-import ws18.model.CustomerReportTransaction;
-import ws18.model.DTUPayTransaction;
-import ws18.model.MerchantReportTransaction;
+import ws18.messagingutils.IEventReceiver;
+import ws18.messagingutils.IEventSender;
+import ws18.messagingutils.RabbitMQValues;
+import ws18.model.*;
 
 import java.util.ArrayList;
 
-public abstract class ReportingService implements IReportingService, IEventReceiver {
+public class ReportingService implements IReportingService, IEventReceiver {
 
     private final ObjectMapper objectMapper;
     private IReportDatabase reportDatabase = ControlReg.getReportDatabase();
