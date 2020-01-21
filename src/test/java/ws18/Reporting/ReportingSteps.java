@@ -14,6 +14,10 @@ import java.util.Date;
 
 import static org.mockito.Mockito.*;
 
+/**
+ * @author Ali Moussa, s175119
+ */
+
 public class ReportingSteps {
 
     private ArrayList<DTUPayTransaction> dtuPayTransactions = new ArrayList<>();

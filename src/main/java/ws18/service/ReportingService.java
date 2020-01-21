@@ -10,6 +10,10 @@ import ws18.model.*;
 
 import java.util.ArrayList;
 
+/**
+ * @author Ali Moussa, s175119
+ */
+
 public class ReportingService implements IReportingService, IEventReceiver {
 
     private final ObjectMapper objectMapper;

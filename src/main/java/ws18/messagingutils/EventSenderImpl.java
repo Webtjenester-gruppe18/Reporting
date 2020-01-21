@@ -9,6 +9,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import ws18.model.Event;
 
+/**
+ * @author Emil Vinkel, s175107
+ */
+
 @Component
 public class EventSenderImpl implements IEventSender {
     private RabbitTemplate rabbitTemplate;

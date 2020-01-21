@@ -6,6 +6,10 @@ import lombok.Setter;
 
 import java.io.Serializable;
 
+/**
+ * @author Ali Moussa, s175119
+ */
+
 @Getter
 @Setter
 @NoArgsConstructor

@@ -3,6 +3,10 @@ import ws18.database.*;
 import ws18.exception.ExceptionContainer;
 import ws18.service.*;
 
+/**
+ * @author Ali Moussa, s175119
+ */
+
 public class ControlReg {
     private static ExceptionContainer exceptionContainer;
     private static IReportingService reportingService;
