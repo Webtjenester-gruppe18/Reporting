@@ -1,20 +1,10 @@
 package ws18.controller;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import ws18.control.ControlReg;
-import ws18.model.CustomerReportTransaction;
-import ws18.model.DTUPayTransaction;
-import ws18.model.MerchantReportTransaction;
-import ws18.service.IReportingService;
-
-import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class ReportingController {
-
+    /*
     private IReportingService reportingService = ControlReg.getReportingService();
 
     @PostMapping(path = "/transactions", consumes = "application/json", produces = "application/json")
@@ -64,4 +54,5 @@ public class ReportingController {
         return ResponseEntity.status(HttpStatus.OK).body(merchantTransactionsByIdFromThenToNow);
     }
 
+     */
 }
